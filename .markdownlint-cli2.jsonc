@@ -18,6 +18,7 @@
   },
   "ignores": [
     "node_modules/**",
-    ".terraform/**"
+    ".terraform/**",
+    "**/.terraform/**"
   ]
 }
