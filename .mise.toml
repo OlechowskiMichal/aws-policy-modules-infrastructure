@@ -3,15 +3,10 @@
 # Utility tools use "latest" to keep templates current.
 [tools]
 opentofu = "1.9"
-opa = "1"
-conftest = "latest"
 task = "3"
 actionlint = "latest"
 yamllint = "latest"
 markdownlint-cli2 = "latest"
-sops = "latest"
-age = "latest"
-jq = "latest"
 tflint = "latest"
 trivy = "latest"
 

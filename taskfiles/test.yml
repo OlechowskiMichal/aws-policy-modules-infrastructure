@@ -1,0 +1,16 @@
+---
+version: '3'
+
+vars:
+  GO: go
+
+tasks:
+  unit:
+    desc: Run unit tests
+    dir: test
+    env:
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_DEFAULT_REGION: us-east-1
+    cmds:
+      - "{{.GO}} test -v -timeout 10m ./..."
