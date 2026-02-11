@@ -1,0 +1,18 @@
+---
+version: '3'
+
+tasks:
+  actionlint:
+    desc: Lint GitHub Actions workflows
+    cmds:
+      - actionlint -color -oneline
+
+  yamllint:
+    desc: Lint YAML files
+    cmds:
+      - yamllint --strict .
+
+  markdownlint:
+    desc: Lint Markdown files
+    cmds:
+      - markdownlint-cli2 "**/*.md" "!node_modules"

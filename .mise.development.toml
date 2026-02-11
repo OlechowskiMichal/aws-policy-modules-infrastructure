@@ -1,0 +1,7 @@
+# Development profile — additional tools for local work
+[tools]
+lefthook = "1.13"
+node = "22"
+gitleaks = "latest"
+yq = "latest"
+awscli = "latest"
