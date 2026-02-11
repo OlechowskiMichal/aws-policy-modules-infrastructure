@@ -16,11 +16,6 @@ tasks:
     cmds:
       - "{{.TOFU}} -chdir=tofu fmt -check -recursive"
 
-  init:
-    desc: Initialize OpenTofu with backend
-    cmds:
-      - "{{.TOFU}} -chdir=tofu init"
-
   init:local:
     desc: Initialize OpenTofu without backend (for local validation)
     cmds:
@@ -52,52 +47,13 @@ tasks:
       - task: :lint:yamllint
       - task: :lint:markdownlint
 
-  plan:
-    desc: Create OpenTofu plan
+  trivy:
+    desc: Scan OpenTofu configuration for security issues
     cmds:
-      - "{{.TOFU}} -chdir=tofu plan -no-color -out=plan.tfplan"
-
-  plan:show:
-    desc: Show human-readable plan output
-    cmds:
-      - "{{.TOFU}} -chdir=tofu show -no-color plan.tfplan"
-
-  plan:json:
-    desc: Export plan as JSON for policy checks
-    cmds:
-      - "{{.TOFU}} -chdir=tofu show -json plan.tfplan > tofu/plan.json"
-
-  plan:full:
-    desc: Create plan, show, and export JSON
-    cmds:
-      - task: plan
-      - task: plan:show
-      - task: plan:json
-
-  apply:
-    desc: Apply OpenTofu plan
-    cmds:
-      - "{{.TOFU}} -chdir=tofu apply -input=false -auto-approve plan.tfplan"
-
-  policy:
-    desc: Run OPA policy checks against plan
-    preconditions:
-      - test -f tofu/plan.json
-    cmds:
-      - conftest update
-      - conftest test tofu/plan.json
+      - trivy config tofu/ --severity HIGH,CRITICAL --exit-code 1
 
   clean:
     desc: Remove generated files
     cmds:
       - rm -rf tofu/.terraform
       - rm -f tofu/.terraform.lock.hcl
-      - rm -f tofu/plan.tfplan
-      - rm -f tofu/plan.json
-      - rm -f tofu/plan.txt
-      - rm -f tofu/*.tfstate*
-
-  trivy:
-    desc: Scan OpenTofu configuration for security issues
-    cmds:
-      - trivy config tofu/ --severity HIGH,CRITICAL --exit-code 1

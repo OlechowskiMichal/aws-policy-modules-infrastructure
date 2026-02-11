@@ -1,20 +1,15 @@
-variable "project_name" {
-  description = "Project name for resource naming"
+variable "bucket_arn" {
+  description = "ARN of the S3 bucket to protect"
   type        = string
 }
 
-variable "environment" {
-  description = "Environment name (e.g., dev, staging, prod)"
+variable "sse_algorithm" {
+  description = "Expected SSE algorithm. Valid: aws:kms, AES256"
   type        = string
-}
+  default     = "aws:kms"
 
-variable "aws_region" {
-  description = "AWS region"
-  type        = string
-}
-
-variable "tags" {
-  description = "Additional tags to apply to all resources"
-  type        = map(string)
-  default     = {}
+  validation {
+    condition     = contains(["aws:kms", "AES256"], var.sse_algorithm)
+    error_message = "sse_algorithm must be \"aws:kms\" or \"AES256\""
+  }
 }

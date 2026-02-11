@@ -8,8 +8,8 @@ includes:
     taskfile: ./taskfiles/tofu.yml
   lint:
     taskfile: ./taskfiles/lint.yml
-  sops:
-    taskfile: ./taskfiles/sops.yml
+  test:
+    taskfile: ./taskfiles/test.yml
   ci:
     taskfile: ./taskfiles/ci.yml
 
