@@ -36,3 +36,6 @@ credentials*
 
 # Conftest — policies pulled at runtime
 policy/
+
+# golangci-lint custom build
+custom-gcl
