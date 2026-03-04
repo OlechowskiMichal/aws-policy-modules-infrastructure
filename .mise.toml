@@ -2,6 +2,7 @@
 # IaC tools pinned to major versions to avoid breaking changes.
 # Utility tools use "latest" to keep templates current.
 [tools]
+cocogitto = "6"
 opentofu = "1.9"
 task = "3"
 actionlint = "latest"

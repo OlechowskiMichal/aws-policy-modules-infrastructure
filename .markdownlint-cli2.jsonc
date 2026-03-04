@@ -17,7 +17,6 @@
     "MD060": false   // Table column style
   },
   "ignores": [
-    "node_modules/**",
     ".terraform/**",
     "**/.terraform/**"
   ]
