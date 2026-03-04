@@ -12,6 +12,8 @@ includes:
     taskfile: ./taskfiles/test.yml
   ci:
     taskfile: ./taskfiles/ci.yml
+  hooks:
+    taskfile: ./taskfiles/hooks.yml
 
 tasks:
   default:

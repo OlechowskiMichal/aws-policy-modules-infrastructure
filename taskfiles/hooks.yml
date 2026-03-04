@@ -1,0 +1,71 @@
+---
+version: '3'
+
+tasks:
+  trailing-whitespace:
+    desc: Check for trailing whitespace in files
+    cmds:
+      - cmd: |
+          if grep -Hn '[[:blank:]]$' {{.CLI_ARGS}} 2>/dev/null; then
+            echo "Trailing whitespace found"
+            exit 1
+          fi
+
+  end-of-file:
+    desc: Check files end with newline
+    cmds:
+      - cmd: |
+          for f in {{.CLI_ARGS}}; do
+            if [ -s "$f" ] && [ -n "$(tail -c 1 "$f")" ]; then
+              echo "$f: no newline at end of file"
+              exit 1
+            fi
+          done
+
+  check-yaml:
+    desc: Validate YAML syntax
+    cmds:
+      - cmd: |
+          set -e
+          for f in {{.CLI_ARGS}}; do
+            if ! python3 -c "import yaml; yaml.safe_load(open('$f'))" 2>/dev/null; then
+              yq e '.' "$f" > /dev/null || exit 1
+            fi
+          done
+
+  check-large-files:
+    desc: Check files do not exceed 500KB
+    cmds:
+      - cmd: |
+          MAX_KB=500
+          for f in {{.CLI_ARGS}}; do
+            size=$(wc -c < "$f" 2>/dev/null || echo 0)
+            if [ "$size" -gt $((MAX_KB * 1024)) ]; then
+              echo "$f exceeds ${MAX_KB}KB"
+              exit 1
+            fi
+          done
+
+  check-merge-conflict:
+    desc: Check for merge conflict markers
+    cmds:
+      - cmd: |
+          if grep -Hn '^<<<<<<< \|^=======$\|^>>>>>>> ' {{.CLI_ARGS}} 2>/dev/null; then
+            echo "Merge conflict markers found"
+            exit 1
+          fi
+
+  gitleaks:protect:
+    desc: Check staged changes for secrets
+    cmds:
+      - gitleaks protect --staged --verbose
+
+  gitleaks:detect:
+    desc: Scan repository for secrets
+    cmds:
+      - gitleaks detect --verbose
+
+  cocogitto:
+    desc: Verify commit message follows Conventional Commits
+    cmds:
+      - cog verify --file {{.CLI_ARGS}}
