@@ -3,15 +3,15 @@ pre-commit:
   commands:
     tofu-fmt:
       glob: "**/*.tf"
-      run: tofu -chdir=tofu fmt -check -recursive
+      run: task tofu:fmt:check
       fail_text: "tofu fmt found unformatted files"
 
     tflint:
       glob: "**/*.tf"
-      run: tflint --init && tflint --chdir=tofu --config="$PWD/.tflint.hcl" --recursive
+      run: task tofu:tflint
       fail_text: "tflint found issues"
 
     trivy:
       glob: "**/*.tf"
-      run: trivy config tofu/ --severity HIGH,CRITICAL --exit-code 1
+      run: task tofu:trivy
       fail_text: "trivy found security issues in OpenTofu configuration"
