@@ -15,7 +15,7 @@ tasks:
   markdownlint:
     desc: Lint Markdown files
     cmds:
-      - markdownlint-cli2 "**/*.md" "!node_modules"
+      - markdownlint-cli2 "**/*.md"
 
   go:build:
     desc: Build custom golangci-lint with plugins
